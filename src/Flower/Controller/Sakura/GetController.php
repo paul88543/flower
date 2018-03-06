@@ -8,7 +8,9 @@
 
 namespace Flower\Controller\Sakura;
 
+use Flower\model\SakuraModel;
 use Windwalker\Core\Controller\AbstractController;
+use Windwalker\Data\Data;
 use Windwalker\DataMapper\DataMapper;
 
 /**
@@ -23,6 +25,7 @@ class GetController extends AbstractController
      * The main execution process.
      *
      * @return  mixed
+     * @throws \Exception
      * @throws \LogicException
      */
     protected function doExecute()
@@ -56,12 +59,25 @@ class GetController extends AbstractController
 
         $id = $this->input->get('id');
 
-        $mapper = new DataMapper('sakuras');
+        /** @var SakuraModel $model */
+        $model = $this->getModel('Sakura');
 
-        $sakura = $mapper->findOne($id);
+//        $sakura = $model->getItem(['id' => $id]);
 
-        return $this->renderView('Sakura', 'default', 'edge', [
-            'sakura' => $sakura
-        ]);
+        $sakura = $id ? $model->getById($id) : new Data();
+
+//        $mapper = new DataMapper('sakuras');
+//        $sakura = $mapper->findOne($id);
+
+//        return $this->renderView('Sakura', 'default', 'edge', [
+//            'sakura' => $sakura
+//        ]);
+
+        $layout = $this->input->get('layout','default');
+
+        $view = $this->getView('Sakura');
+        $view['sakura'] = $sakura;
+
+        return $view->setLayout($layout)->render();
     }
 }

@@ -29,8 +29,13 @@ class GetController extends AbstractController
     {
         $sakuras = (new DataMapper('sakuras'))->findAll();
 
-        return $this->renderView('Sakuras', 'default', 'edge' ,[
-            'sakuras' => $sakuras
-        ]);
+//        return $this->renderView('Sakuras', 'default', 'edge' ,[
+//            'sakuras' => $sakuras
+//        ]);
+
+        $view = $this->getView('Sakuras');
+        $view['sakuras'] = $sakuras;
+
+        return $view->render();
     }
 }

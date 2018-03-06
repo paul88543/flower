@@ -8,7 +8,10 @@
 
 namespace Flower\Controller\Sakura;
 
+use Flower\model\SakuraModel;
 use Windwalker\Core\Controller\AbstractController;
+use Windwalker\Core\Model\Exception\ValidateFailException;
+use Windwalker\Data\Data;
 use Windwalker\DataMapper\DataMapper;
 
 /**
@@ -23,6 +26,9 @@ class SaveController extends AbstractController
      * The main execution process.
      *
      * @return  mixed
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
+     * @throws \Exception
      * @throws \OutOfRangeException
      */
     protected function doExecute()
@@ -42,14 +48,33 @@ class SaveController extends AbstractController
             'height' => $height,
         ];
 
-        $mapper = new DataMapper('sakuras');
 
-        if ($id) {
-            $mapper->updateOne($data);
-        } else {
-            $data = $mapper->createOne($data);
+        // 下方註解是在$model變數Alt + Enter跑出來的
+        /** @var SakuraModel $model */
+        $model = $this->getModel('Sakura');
+
+        try {
+            $data = $model->save($data);
+        } catch (ValidateFailException $e) {
+            $this->addMessage('[Invlid Data]: ' .  $e->getMessage(), 'danger');
+            $this->setRedirect($this->router->route('sakura', [ 'id' => $data['id']]));
+
+            return true;
         }
 
+        // 不透過model的寫法 開始
+
+//        $mapper = new DataMapper('sakuras');
+
+//        if ($id) {
+//            $mapper->updateOne($data);
+//        } else {
+//            $data = $mapper->createOne($data);
+//        }
+
+//        不透過model的寫法 結束
+
+        $this->addMessage('Save Success', 'success');
         $this->setRedirect($this->router->route('sakura', [ 'id' => $data['id']]));
     }
 }

@@ -3,9 +3,13 @@
 
 @section('content')
     <div class="container">
-        <table class="table-bordered">
-            <h2>Sakuras</h2>
+        <h2>Sakuras</h2>
 
+        <a href="{{ $router->route('sakura', ['layout' => 'edit']) }}">
+            Create
+        </a>
+
+        <table class="table table-bordered">
             <tbody>
             @foreach ($sakuras as $sakura)
                 <tr>
@@ -13,9 +17,13 @@
                         {{ $sakura->id }}
                     </td>
                     <td>
-                        <a href="{{ $router->route('sakura',['id' => $sakura->id]) }}">
+                        <a href="{{ $sakura->viewlink }}">
                             {{ $sakura->title }}
                         </a>
+
+                        (<a href="{{ $sakura->editlink }}">
+                            編輯
+                        </a>)
                     </td>
                     <td>
                         {{ $sakura->age }}
@@ -25,6 +33,9 @@
                     </td>
                     <td>
                         {{ $sakura->location }}
+                    </td>
+                    <td>
+                        {{ $sakura->date }}
                     </td>
                 </tr>
             @endforeach
