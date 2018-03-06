@@ -1,0 +1,7 @@
+main:
+    pattern: /
+    package: main
+
+flower:
+    pattern: /flower
+    package: flower

@@ -1,0 +1,16 @@
+sakura:
+#    pattern: /sakura(/age,height,location,color)
+    pattern: /sakura(/id)
+    controller: Sakura
+#    action:
+#        post: NewController
+#        put|patch: UpdateController
+
+sakuras:
+#    pattern: /sakura(/age,height,location,color)
+    pattern: /sakuras
+    controller: Sakuras
+
+olive:
+    pattern: /olive/
+    controller: Olive
